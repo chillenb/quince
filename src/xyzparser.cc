@@ -1,63 +1,26 @@
-#include <boost/spirit/include/qi.hpp>
-#include <boost/phoenix/core.hpp>
-#include <boost/phoenix/operator.hpp>
-#include <boost/phoenix/fusion.hpp>
-#include <boost/phoenix/stl.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/variant/recursive_variant.hpp>
-#include <boost/foreach.hpp>
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-
+#include "fast_float/fast_float.h"
 #include "geom.h"
+#include <cstdlib>
+#include <iostream>
+#include <istream>
 
-namespace fusion = boost::fusion;
-namespace phoenix = boost::phoenix;
-namespace qi = boost::spirit::qi;
-namespace ascii = boost::spirit::ascii;
+XYZFile::XYZFile(std::istream &in) {
+  fast_float::parse_options options{fast_float::chars_format::fortran};
 
-BOOST_FUSION_ADAPT_STRUCT(
-    XYZEntry,
-    (std::string, label)
-    (double[3], coords)
-)
-
-template <typename Iterator>
-struct XYZParserInner : qi::grammar<Iterator, XYZEntry(), ascii::space_type>
-{
-    XYZParserInner() : XYZParserInner::base_type(start)
-    {
-        using qi::int_;
-        using qi::lit;
-        using qi::double_;
-        using qi::lexeme;
-        using ascii::char_;
-
-        start %= lexeme[+char_("A-Za-z")] >> double_ >> double_ >> double_;
+  in >> natm;
+  atoms.resize(natm);
+  std::string dbl;
+  for (size_t i = 0; i < natm; ++i) {
+    in >> atoms[i].label;
+    for (int j = 0; j < 3; j++) {
+      in >> dbl;
+      auto answer = fast_float::from_chars_advanced(
+          dbl.data(), dbl.data() + dbl.size(), atoms[i].coords[j], options);
+      if (answer.ec != std::errc() || answer.ptr != dbl.data() + dbl.size()) {
+        std::cerr << "could not parse the number " << dbl << " for atom " << i
+                  << " coordinate " << j + 1 << "\n";
+        exit(-1);
+      }
     }
-
-    qi::rule<Iterator, XYZEntry(), ascii::space_type> start;
-};
-
-template <typename Iterator>
-struct XYZParser : qi::grammar<Iterator, XYZFile(), ascii::space_type>
-{
-    XYZParser() : XYZParser::base_type(start)
-    {
-        using qi::int_;
-        using qi::lit;
-        using qi::double_;
-        using qi::lexeme;
-        using ascii::char_;
-
-        start %= int_ >> lit('\n') >> *(inner);
-        inner %= lexeme[+char_("A-Za-z")] >> double_ >> double_ >> double_ >> lit('\n');
-    }
-
-    XYZParserInner<Iterator> inner;
-    qi::rule<Iterator, XYZFile(), ascii::space_type> start;
-    qi::rule<Iterator, XYZEntry(), ascii::space_type> inner;
-};
+  }
+}
