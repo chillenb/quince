@@ -1,0 +1,8 @@
+[submodule "external/fast_float"]
+	path = external/fast_float
+	url = https://github.com/fastfloat/fast_float
+	branch = v7.0.0
+[submodule "external/PEGTL"]
+	path = external/PEGTL
+	url = https://github.com/taocpp/PEGTL
+  branch = 3.2.8

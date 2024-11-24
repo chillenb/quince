@@ -3,6 +3,7 @@
 #include <string>
 #include <tao/pegtl.hpp>
 #include <tao/pegtl/file_input.hpp>
+#include <vector>
 
 namespace pegtl = TAO_PEGTL_NAMESPACE;
 
