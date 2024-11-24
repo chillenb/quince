@@ -1,5 +1,8 @@
+cmake_minimum_required(VERSION 3.21)
 
+add_executable(saneqc)
 target_sources(saneqc PRIVATE main.cc xyzparser.cc)
-target_sources(parsegbs PRIVATE gbs.cc)
+set_target_properties(saneqc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+
 target_link_libraries(saneqc PRIVATE fast_float)
-target_link_libraries(parsegbs PRIVATE fast_float taocpp::pegtl)
+target_include_directories(saneqc PRIVATE ${PROJECT_SOURCE_DIR}/include)

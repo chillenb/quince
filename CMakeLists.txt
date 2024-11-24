@@ -13,6 +13,10 @@ FetchContent_MakeAvailable(fast_float)
 
 find_package(pegtl REQUIRED)
 
-add_executable(saneqc)
-add_executable(parsegbs)
 add_subdirectory(src)
+
+option(SANEQC_BUILD_TESTS "Build tests" ON)
+if(SANEQC_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(src/test)
+endif()

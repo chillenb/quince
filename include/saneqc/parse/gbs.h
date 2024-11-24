@@ -1,11 +1,11 @@
-#include "fast_float/fast_float.h"
 #include <iostream>
 #include <stdexcept>
 #include <string>
-
 #include <tao/pegtl.hpp>
 #include <tao/pegtl/contrib/uri.hpp>
 #include <tao/pegtl/file_input.hpp>
+
+#include "fast_float/fast_float.h"
 
 namespace pegtl = TAO_PEGTL_NAMESPACE;
 
@@ -40,8 +40,7 @@ static double parsedbl(const char *begin, const char *end) {
   return v;
 }
 
-static int parsedbls(const char *begin, const char *end,
-                     std::vector<double> &vec) {
+static int parsedbls(const char *begin, const char *end, std::vector<double> &vec) {
   fast_float::parse_options options{fast_float::chars_format::fortran};
   double v;
   int n = 0;
@@ -62,22 +61,15 @@ namespace fdouble_ {
 using namespace TAO_PEGTL_NAMESPACE;
 struct plus_minus : opt<one<'+', '-'>> {};
 struct dot : one<'.'> {};
-
-struct inf
-    : seq<istring<'i', 'n', 'f'>, opt<istring<'i', 'n', 'i', 't', 'y'>>> {};
-
-struct nan : seq<istring<'n', 'a', 'n'>, opt<one<'('>, plus<alnum>, one<')'>>> {
-};
+struct inf : seq<istring<'i', 'n', 'f'>, opt<istring<'i', 'n', 'i', 't', 'y'>>> {};
+struct nan : seq<istring<'n', 'a', 'n'>, opt<one<'('>, plus<alnum>, one<')'>>> {};
 
 template <typename D>
 struct number : if_then_else<dot, plus<D>, seq<plus<D>, opt<dot, star<D>>>> {};
-
 struct e : one<'e', 'E', 'd', 'D'> {};
 struct p : one<'p', 'P'> {};
 struct exponent : seq<plus_minus, plus<digit>> {};
-
 struct decimal : seq<number<digit>, opt<e, exponent>> {};
-
 struct grammar : seq<plus_minus, sor<decimal, inf, nan>> {};
 } // namespace fdouble_
 
@@ -87,9 +79,7 @@ struct ws : ascii::blank {};
 struct comment_line : seq<one<'!'>, until<eol>> {};
 struct c_nl : sor<comment_line, eol> {};
 struct c_wsp : sor<ws, seq<c_nl, ws>> {};
-
 struct block_center : plus<alpha> {};
-
 struct block_header
     : seq<list<block_center, plus<ws>>, star<ws>, one<'0'>, star<ws>, c_nl> {};
 
@@ -126,8 +116,7 @@ template <> struct action<block_header> {
 
 template <> struct action<shell_header> {
   template <typename Input>
-  static void apply(const Input &in, GBBlockParserState &state) {
-  }
+  static void apply(const Input &in, GBBlockParserState &state) {}
 };
 
 template <> struct action<shell_type> {
@@ -181,46 +170,15 @@ template <> struct action<block> {
 
 } // namespace gbsgrammar
 
-template <typename Input>
-static std::vector<GBBlockRaw> parse_gbs(Input &in) {
+template <typename Input> static std::vector<GBBlockRaw> parse_gbs(Input &in) {
   GBBlockParserState blk;
-  pegtl::parse<gbsgrammar::grammar, gbsgrammar::action>(in, blk);
-  return std::move(blk.blocks);
-}
-
-int main(int argc, char *argv[]) {
-  if (argc != 2)
-    return 1;
-
-  // Start a parsing run of argv[1] with the string
-  // variable 'name' as additional argument to the
-  // action; then print what the action put there.
-
-  pegtl::file_input in(argv[1]);
-
   try {
-    auto blk = parse_gbs(in);
-    for (const auto &s : blk) {
-      for (const auto &c : s.centers) {
-        std::cout << c << std::endl;
-      }
-      for (const auto &s : s.shells) {
-        printf("%s %d %3.2f\n", s.itype.c_str(), s.ngauss, s.scalefactor);
-        for (const auto &l : s.block) {
-          printf("    ");
-          for (const auto &e : l) {
-            printf("%15E ", e);
-          }
-          std::cout << std::endl;
-        }
-      }
-    }
+    pegtl::parse<gbsgrammar::grammar, gbsgrammar::action>(in, blk);
   } catch (const TAO_PEGTL_NAMESPACE::parse_error &e) {
     const auto &p = e.positions().front();
     std::cerr << e.what() << std::endl
               << in.line_at(p) << '\n'
               << std::setw(p.column) << '^' << std::endl;
   }
-
-  return 0;
+  return std::move(blk.blocks);
 }

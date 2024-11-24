@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include "geom.h"
+#include <saneqc/geom.h>
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   XYZFile xyz(in);
   printf("Number of atoms: %zu\n", xyz.natm);
   for (size_t i = 0; i < xyz.natm; ++i) {
-    printf("%s %10.5f %10.5f %10.5f\n", xyz.atoms[i].label.c_str(),
-           xyz.atoms[i].x(), xyz.atoms[i].y(), xyz.atoms[i].z());
+    printf("%s %10.5f %10.5f %10.5f\n", xyz.atoms[i].label.c_str(), xyz.atoms[i].x(),
+           xyz.atoms[i].y(), xyz.atoms[i].z());
   }
 }
