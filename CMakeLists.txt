@@ -11,9 +11,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fast_float)
 
-include(FetchContent)
-FetchContent_Declare(lexy URL https://lexy.foonathan.net/download/lexy-src.zip)
-FetchContent_MakeAvailable(lexy)
+find_package(pegtl REQUIRED)
 
 add_executable(saneqc)
+add_executable(parsegbs)
 add_subdirectory(src)
