@@ -15,7 +15,7 @@ struct XYZEntry {
   double &y() { return coords[1]; }
   double &z() { return coords[2]; }
   XYZEntry() {};
-  XYZEntry(const std::string &label, double x, double y, double z) : label(label) {
+  XYZEntry(const std::string label, double x, double y, double z) : label(label) {
     coords[0] = x;
     coords[1] = y;
     coords[2] = z;
@@ -24,6 +24,7 @@ struct XYZEntry {
 
 struct XYZFile {
   size_t natm;
+  std::string comment;
   std::vector<XYZEntry> atoms;
   XYZFile() {};
   XYZFile(std::istream &in);
