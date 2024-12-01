@@ -6,3 +6,7 @@
 	path = external/PEGTL
 	url = https://github.com/taocpp/PEGTL
   branch = 3.2.8
+[submodule "external/tomlplusplus"]
+	path = external/tomlplusplus
+	url = https://github.com/marzer/tomlplusplus
+  branch = v3.4.0
