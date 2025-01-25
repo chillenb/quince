@@ -20,4 +20,10 @@ if(SANEQC_BUILD_TESTS)
   add_subdirectory(src/test)
 endif()
 
-add_subdirectory(external/qcint)
+option(SANEQC_USE_QCINT "Use qcint rather than libcint" ON)
+
+if(SANEQC_USE_QCINT)
+  add_subdirectory(external/qcint)
+else()
+  add_subdirectory(external/libcint)
+endif()
