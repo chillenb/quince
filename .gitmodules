@@ -10,3 +10,7 @@
 	path = external/tomlplusplus
 	url = https://github.com/marzer/tomlplusplus
   branch = v3.4.0
+[submodule "external/qcint"]
+	path = external/qcint
+	url = https://github.com/chillenb/qcint.git
+  branch = simddconfig
