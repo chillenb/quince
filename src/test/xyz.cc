@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <saneqc/parse/xyz.h>
+#include <quince/parse/xyz.h>
 #include <tao/pegtl.hpp>
 
 int main(int argc, char *argv[]) {

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include <saneqc/geom.h>
+#include <quince/geom.h>
 
 int main(int argc, char **argv) {
   if (argc != 2) {

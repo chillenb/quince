@@ -1,7 +1,7 @@
 #include <iostream>
 #include <tao/pegtl.hpp>
 
-#include <saneqc/parse/gbs.h>
+#include <quince/parse/gbs.h>
 
 int main(int argc, char *argv[]) {
   if (argc != 2)

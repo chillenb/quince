@@ -1,6 +1,6 @@
 #include <iostream>
-#include <saneqc/geom.h>
-#include <saneqc/parse/fdouble.h>
+#include <quince/geom.h>
+#include <quince/parse/fdouble.h>
 #include <string>
 #include <tao/pegtl.hpp>
 #include <tao/pegtl/file_input.hpp>

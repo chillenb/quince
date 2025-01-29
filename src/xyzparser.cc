@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <istream>
-#include <saneqc/geom.h>
+#include <quince/geom.h>
 
 XYZFile::XYZFile(std::istream &in) {
   fast_float::parse_options options{fast_float::chars_format::fortran};

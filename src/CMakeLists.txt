@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
-add_executable(saneqc)
-target_sources(saneqc PRIVATE main.cc xyzparser.cc)
-set_target_properties(saneqc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+add_executable(quince)
+target_sources(quince PRIVATE main.cc xyzparser.cc)
+set_target_properties(quince PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
-target_link_libraries(saneqc PRIVATE fast_float)
-target_include_directories(saneqc PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(quince PRIVATE fast_float)
+target_include_directories(quince PRIVATE ${PROJECT_SOURCE_DIR}/include)

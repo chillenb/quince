@@ -1,5 +1,5 @@
-#ifndef SANEQC_GEOM_H
-#define SANEQC_GEOM_H
+#ifndef QUINCE_GEOM_H
+#define QUINCE_GEOM_H
 
 #include <istream>
 #include <stddef.h>
@@ -30,4 +30,4 @@ struct XYZFile {
   XYZFile(std::istream &in);
 };
 
-#endif // SANEQC_GEOM_H
+#endif // QUINCE_GEOM_H
